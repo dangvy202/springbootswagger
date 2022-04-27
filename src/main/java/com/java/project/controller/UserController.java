@@ -27,95 +27,106 @@ import com.java.project.service.Impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
-public class UserController extends Exception{
-	
+public class UserController extends Exception {
+
 	@Autowired
 	public UserServiceImpl userImpl;
-	
-	//list user
+
+	// list user
 	@GetMapping("/user/list")
-	public ResponseEntity<List<UserEntity>> HomeController() { //List<UserEntity> HomeController() {
+	public ResponseEntity<List<UserEntity>> HomeController() { // List<UserEntity> HomeController() {
 		List<UserEntity> listUser = userImpl.findAll();
-		return new ResponseEntity<List<UserEntity>>(listUser,HttpStatus.OK);
+		return new ResponseEntity<List<UserEntity>>(listUser, HttpStatus.OK);
 	}
-	//get id
+
+	// get id
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getuserId(@PathVariable("id") Long id) {
 		Object getIdUser = userImpl.findById(id);
-		return new ResponseEntity<Object>(getIdUser , HttpStatus.OK);
+		return new ResponseEntity<Object>(getIdUser, HttpStatus.OK);
 	}
-	//delete user
+
+	// get string user
+//	@GetMapping("/user/{user}")
+//	public ResponseEntity<?> getuserId(@PathVariable("user") String user) {
+//		Object getIdUser = userImpl.findByUserName(user);
+//		return new ResponseEntity<Object>(getIdUser, HttpStatus.OK);
+//	}
+
+	// delete user
 	@DeleteMapping("/user/{id}")
 	public String deleteController(Long id) {
 		String message;
 		Optional<UserEntity> checkId = userImpl.findById(id);
-		if(checkId.isPresent() == true) {
+		if (checkId.isPresent() == true) {
 			userImpl.remove(id);
 			message = "DELETE DONE";
-		}else {
+		} else {
 			message = "DELETE FAIL";
 		}
 		return message;
 	}
-	//edit user
+
+	// edit user
 	@PutMapping("/user/{id}")
 	public String editController(Long id, UserEntity user) {
 		String message;
-		
+
 		Optional<UserEntity> checkIdExist = userImpl.findById(id);
-		
-		if(checkIdExist.isPresent() == true) {
+
+		if (checkIdExist.isPresent() == true) {
 			checkIdExist.get().setEmail(user.getEmail());
 			checkIdExist.get().setEnabled(user.getEnabled());
 			checkIdExist.get().setPassword(user.getPassword());
 			checkIdExist.get().setRole(user.getRole());
-			checkIdExist.get().setUsername(user.getUsername()); 
+			checkIdExist.get().setUsername(user.getUsername());
 			checkIdExist.get().setAmount(user.getAmount());
 			checkIdExist.get().setCustomer_order_id(user.getCustomer_order_id());
 			checkIdExist.get().setPayment_date(user.getPayment_date());
-			checkIdExist.get().setPayment_method(user.getPayment_method());  
+			checkIdExist.get().setPayment_method(user.getPayment_method());
 			checkIdExist.get().setStatus(user.getStatus());
 			userImpl.updateUser(checkIdExist);
 			message = "Update Done";
-		}else {
+		} else {
 			message = "Update Fail";
 		}
-		
+
 		return message;
 	}
-	//new user
+
+	// new user
 	@PostMapping("/user")
 	public String createController(UserEntity user) {
 		String message;
 		UserEntity userSet = new UserEntity();
-		 // get current date 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+		// get current date
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		
+
 		userSet.setEmail(user.getEmail());
 		userSet.setEnabled(user.getEnabled());
 		userSet.setPassword(user.getPassword());
 		userSet.setRole(user.getRole());
-		userSet.setUsername(user.getUsername()); 
+		userSet.setUsername(user.getUsername());
 		userSet.setAmount(user.getAmount());
 		userSet.setCustomer_order_id(user.getCustomer_order_id());
 		userSet.setPayment_date(user.getPayment_date());
-		userSet.setPayment_method(user.getPayment_method());  
+		userSet.setPayment_method(user.getPayment_method());
 		userSet.setStatus(user.getStatus());
-		
+
 		List<UserEntity> checkArrIdAfter = userImpl.findAll();
 		Long idAfter = checkArrIdAfter.stream().count();
 		userImpl.save(userSet);
-		
+
 		List<UserEntity> checkArrIdBefore = userImpl.findAll();
 		Long idBefore = checkArrIdBefore.stream().count();
-		//check result
-		if(idAfter < idBefore) {
+		// check result
+		if (idAfter < idBefore) {
 			message = "Success Create";
-		}else {
+		} else {
 			message = "Fail Create";
 		}
 		return message;
 	}
-	
+
 }

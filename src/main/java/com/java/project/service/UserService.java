@@ -12,4 +12,5 @@ public interface UserService {
 	UserEntity save(UserEntity user);
 	void remove(Long id);
 	UserEntity updateUser(Optional<UserEntity> user);
+	//List<UserEntity> findByUserName(String user);
 }

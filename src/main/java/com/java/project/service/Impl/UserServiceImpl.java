@@ -49,4 +49,11 @@ public class UserServiceImpl implements UserService{
 		return userRepo.save(user.get());
 	}
 
+//	@Override
+//	public List<UserEntity> findByUserName(String user) {
+//		System.out.println("user implement user" +user);
+//		System.out.println("user implement useraa" +userRepo.findByName(user));
+//		return userRepo.findByName(user);
+//	}
+
 }
