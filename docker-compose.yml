@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql-springboot-container:
+    image: mysql:8.0.28
+    #container_name: mysql-springboot-container
+    ports:
+      - 3310:3306
+    volumes:
+      - mysql-springboot-data:/var/lib/mysql
+      - mysql-springboot-config-deamond:/etc/mysql/conf.d
+    networks:
+      - backend
+    environment:
+      MYSQL_USER: MYSQL
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: test
+  springboot-docker-container:
+    image: springbootdockercontainer
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: springboot-docker-container
+    ports:
+      - 8080:9999
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+    depends_on:
+      - mysql-springboot-container
+networks:
+  backend:
+    name: springboot-app-network
+volumes:
+  mysql-springboot-data:
+  mysql-springboot-config-deamond:
+  
