@@ -81,6 +81,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- RABBITMQ -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
+		<!-- check again because dont have -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<!-- END RABBIT -->
 	</dependencies>
 
 	<build>

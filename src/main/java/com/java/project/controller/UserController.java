@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.java.project.Entity.UserEntity;
+import com.java.project.RabbitMQ.constance.RabbitMQConstance;
+import com.java.project.service.Impl.RabbitMQService;
 //import com.java.project.exception.ErrorExceptionHandler;
 import com.java.project.service.Impl.UserServiceImpl;
 
@@ -30,12 +32,18 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 public class UserController extends Exception {
 
 	@Autowired
+	private RabbitMQService rabbitmqService;
+	
+	
+	
+	@Autowired
 	public UserServiceImpl userImpl;
 
 	// list user
 	@GetMapping("/user/list")
 	public ResponseEntity<List<UserEntity>> HomeController() { // List<UserEntity> HomeController() {
 		List<UserEntity> listUser = userImpl.findAll();
+		this.rabbitmqService.messageMQResponse(RabbitMQConstance.FILA_ESTOQUE,listUser);
 		return new ResponseEntity<List<UserEntity>>(listUser, HttpStatus.OK);
 	}
 
@@ -43,6 +51,7 @@ public class UserController extends Exception {
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getuserId(@PathVariable("id") Long id) {
 		Object getIdUser = userImpl.findById(id);
+		this.rabbitmqService.messageMQResponse(RabbitMQConstance.FILA_ESTOQUE,getIdUser);
 		return new ResponseEntity<Object>(getIdUser, HttpStatus.OK);
 	}
 
